@@ -15,7 +15,8 @@ import {
     Star,
     Wallet,
     Power,
-    Loader2
+    Loader2,
+    Info
 } from "lucide-react"
 
 // Types
@@ -246,11 +247,103 @@ export default function ProfilePage() {
                         </div>
                     )}
 
-                    {activeTab !== "profile-info" && activeTab !== "manage-addresses" && (
+                    {activeTab === "my-orders" && (
+                        <div className="animate-in fade-in duration-300">
+                            <h3 className="text-lg font-bold text-gray-800 mb-8">My Orders</h3>
+                            <div className="space-y-4">
+                                {[1, 2].map((order) => (
+                                    <div key={order} className="border border-gray-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                                <Package className="w-8 h-8 text-gray-400" />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-gray-800">Order #ORD-{Math.floor(Math.random() * 100000)}</h4>
+                                                <p className="text-sm text-gray-500">Placed on Oct {12 + order}, 2023</p>
+                                                <span className="inline-block mt-1 px-2 py-1 bg-green-50 text-green-600 text-xs font-bold rounded">Delivered</span>
+                                            </div>
+                                        </div>
+                                        <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold text-blue-600 hover:bg-blue-50 transition-colors">
+                                            View Details
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === "pan-card" && (
+                        <div className="animate-in fade-in duration-300">
+                            <h3 className="text-lg font-bold text-gray-800 mb-8">PAN Card Information</h3>
+                            <div className="bg-blue-50 p-4 rounded-xl mb-6 flex items-start gap-3">
+                                <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                                <p className="text-sm text-blue-800">Your PAN card is required for purchases over ₹50,000 or for international shipments.</p>
+                            </div>
+                            <form className="space-y-6 max-w-md">
+                                <div className="space-y-1">
+                                    <label className="text-xs text-gray-500 font-semibold uppercase">PAN Number</label>
+                                    <input type="text" placeholder="ABCDE1234F" className="w-full px-4 py-3 border border-gray-200 uppercase outline-none focus:border-blue-500" />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-xs text-gray-500 font-semibold uppercase">Full Name on PAN</label>
+                                    <input type="text" placeholder="John Doe" className="w-full px-4 py-3 border border-gray-200 outline-none focus:border-blue-500" />
+                                </div>
+                                <button type="button" className="px-10 py-3 bg-[#fb641b] text-white font-bold uppercase shadow-md hover:bg-[#e65a17] transition-all">
+                                    Save PAN
+                                </button>
+                            </form>
+                        </div>
+                    )}
+
+                    {activeTab === "gift-cards" && (
+                        <div className="animate-in fade-in duration-300">
+                            <h3 className="text-lg font-bold text-gray-800 mb-8">Gift Cards Balance</h3>
+                            <div className="p-6 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl text-white shadow-lg shadow-pink-500/20 max-w-sm mb-8">
+                                <p className="text-pink-100 text-sm mb-1">Available Balance</p>
+                                <h2 className="text-4xl font-black mb-6">₹0.00</h2>
+                                <div className="flex gap-4">
+                                    <button className="flex-1 bg-white text-pink-600 font-bold py-2 rounded-lg text-sm">Add Gift Card</button>
+                                </div>
+                            </div>
+                            <div className="border border-gray-200 rounded-xl p-6 text-center">
+                                <Wallet className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                                <p className="text-gray-500 font-medium">No recent gift card transactions</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === "saved-cards" && (
+                        <div className="animate-in fade-in duration-300">
+                            <h3 className="text-lg font-bold text-gray-800 mb-8">Saved Cards</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div className="border border-gray-200 rounded-xl p-4 flex flex-col justify-between h-32 hover:border-blue-300 transition-colors cursor-pointer group">
+                                    <div className="flex justify-between items-center">
+                                        <div className="font-bold text-gray-800">HDFC Bank</div>
+                                        <CreditCard className="w-6 h-6 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                                    </div>
+                                    <div>
+                                        <div className="text-gray-500 tracking-widest text-sm mb-1">**** **** **** 4242</div>
+                                        <div className="text-xs text-gray-400 uppercase">Expires 12/26</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button className="flex items-center gap-2 text-blue-600 font-bold hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors">
+                                + Add New Card
+                            </button>
+                        </div>
+                    )}
+
+                    {(activeTab === "my-coupons" || activeTab === "my-wishlist") && (
                         <div className="h-full flex flex-col items-center justify-center text-center py-20 animate-in fade-in duration-300">
-                            <Package className="w-16 h-16 text-gray-200 mb-6" />
-                            <h3 className="text-xl font-bold text-gray-800 mb-2">Coming Soon</h3>
-                            <p className="text-gray-500">We are currently working on this feature.</p>
+                            {activeTab === "my-coupons" ? <Ticket className="w-16 h-16 text-pink-200 mb-6" /> : <Heart className="w-16 h-16 text-pink-200 mb-6" />}
+                            <h3 className="text-xl font-bold text-gray-800 mb-2">View Your {activeTab === "my-coupons" ? "Coupons" : "Wishlist"}</h3>
+                            <p className="text-gray-500 mb-6">We have a dedicated page for your {activeTab === "my-coupons" ? "coupons" : "wishlist"}.</p>
+                            <button 
+                                onClick={() => router.push(activeTab === "my-coupons" ? "/coupons" : "/wishlist")}
+                                className="px-6 py-3 bg-pink-600 text-white font-bold rounded-full shadow-lg hover:bg-pink-700 transition-colors"
+                            >
+                                Go to {activeTab === "my-coupons" ? "Coupons" : "Wishlist"}
+                            </button>
                         </div>
                     )}
                 </div>
