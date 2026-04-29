@@ -48,73 +48,76 @@ export default function DailyCoupon() {
     };
 
     return (
-        <section className="py-12 bg-gray-50/50">
+        <section className="py-16 relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-3xl p-1 shadow-xl overflow-hidden transform hover:scale-[1.01] transition-transform duration-300">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-[20px] p-5 sm:p-10 text-white relative flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+                <div className="relative group">
+                    {/* Animated Glow Effect */}
+                    <div className="absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                    
+                    <div className="relative glass rounded-3xl p-1 overflow-hidden shadow-2xl">
+                        <div className="bg-white/5 backdrop-blur-xl rounded-[22px] p-6 sm:p-12 text-gray-900 relative flex flex-col md:flex-row items-center justify-between gap-8 sm:gap-12">
 
-                        {/* Decoration */}
-                        <div className="absolute -top-20 -left-20 w-40 h-40 sm:w-64 sm:h-64 bg-white/20 rounded-full blur-3xl"></div>
-                        <div className="absolute -bottom-20 -right-20 w-40 h-40 sm:w-64 sm:h-64 bg-pink-500/30 rounded-full blur-3xl"></div>
-
-                        {/* Left Content */}
-                        <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left space-y-4 max-w-lg">
-                            <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">
-                                <Sparkles className="w-3 h-3" />
-                                Today&apos;s Special Deal
-                            </div>
-                            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold leading-tight">
-                                {coupon.discount} <br />
-                                <span className="text-xl sm:text-2xl font-medium text-pink-100 block mt-2">
-                                    on {coupon.category}
-                                </span>
-                            </h2>
-                            <p className="text-pink-100 text-sm sm:text-base opacity-90">
-                                {coupon.description}
-                            </p>
-
-                            <div className="flex items-center gap-2 text-sm font-medium bg-black/20 px-4 py-2 rounded-lg mt-2">
-                                <Clock className="w-4 h-4 animate-pulse" />
-                                <span>Expires in: {timeLeft}</span>
-                            </div>
-                        </div>
-
-                        {/* Right Content - Coupon Card */}
-                        <div className="relative z-10 bg-white text-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-sm border-2 border-dashed border-gray-300">
-                            <div className="text-center space-y-4">
-                                <p className="text-gray-500 text-sm font-medium uppercase tracking-widest">Coupon Code</p>
-                                <div className="bg-gray-100 py-4 rounded-xl border border-gray-200">
-                                    <code className="text-3xl font-mono font-bold tracking-widest text-indigo-600">
-                                        {coupon.code}
-                                    </code>
+                            {/* Left Content */}
+                            <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left space-y-6 max-w-lg">
+                                <div className="flex items-center gap-2 bg-pink-100 text-pink-600 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase border border-pink-200">
+                                    <Sparkles className="w-3.5 h-3.5" />
+                                    Today&apos;s Exclusive Reward
                                 </div>
-
-                                <button
-                                    onClick={copyToClipboard}
-                                    className={`w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${copied
-                                        ? "bg-green-500 text-white"
-                                        : "bg-gray-900 text-white hover:bg-gray-800"
-                                        }`}
-                                >
-                                    {copied ? (
-                                        <>Copied!</>
-                                    ) : (
-                                        <>
-                                            <Copy className="w-4 h-4" />
-                                            Copy Code
-                                        </>
-                                    )}
-                                </button>
-                                <p className="text-xs text-gray-400">
-                                    *Terms and conditions apply. Valid until midnight.
+                                <h2 className="text-3xl sm:text-5xl md:text-6xl font-black leading-tight text-gray-900">
+                                    {coupon.discount} <br />
+                                    <span className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent block mt-2">
+                                        on {coupon.category}
+                                    </span>
+                                </h2>
+                                <p className="text-gray-600 text-lg leading-relaxed font-medium">
+                                    {coupon.description}
                                 </p>
+
+                                <div className="flex items-center gap-3 text-sm font-bold bg-white/50 backdrop-blur-md border border-gray-200 px-6 py-3 rounded-2xl shadow-sm">
+                                    <Clock className="w-5 h-5 text-pink-500 animate-pulse" />
+                                    <span className="text-gray-700">Ends in: <span className="text-pink-600">{timeLeft}</span></span>
+                                </div>
                             </div>
 
-                            {/* Circles for coupon effect */}
-                            <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#6366f1] rounded-full"></div>
-                            <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#ec4899] rounded-full"></div>
-                        </div>
+                            {/* Right Content - Coupon Card */}
+                            <div className="relative z-10 w-full max-w-sm">
+                                <div className="bg-white p-8 rounded-[2rem] shadow-2xl border-2 border-dashed border-pink-200 relative overflow-hidden">
+                                    <div className="text-center space-y-6">
+                                        <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Unlock Coupon</p>
+                                        <div className="bg-gray-50 py-6 rounded-2xl border border-gray-100 group-hover:border-pink-100 transition-colors">
+                                            <code className="text-4xl font-black tracking-[0.15em] text-gray-900">
+                                                {coupon.code}
+                                            </code>
+                                        </div>
 
+                                        <button
+                                            onClick={copyToClipboard}
+                                            className={`w-full py-4 rounded-2xl font-black transition-all flex items-center justify-center gap-3 text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-95 ${copied
+                                                ? "bg-emerald-500 text-white"
+                                                : "bg-gray-900 text-white hover:bg-black"
+                                                }`}
+                                        >
+                                            {copied ? (
+                                                <>SAVED!</>
+                                            ) : (
+                                                <>
+                                                    <Copy className="w-5 h-5" />
+                                                    COPY CODE
+                                                </>
+                                            )}
+                                        </button>
+                                        <p className="text-[10px] text-gray-400 font-medium">
+                                            *Automatically applied at checkout. Limited time offer.
+                                        </p>
+                                    </div>
+                                    
+                                    {/* Decorative circles */}
+                                    <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#f8f9fb] rounded-full shadow-inner border-r border-pink-100"></div>
+                                    <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#f8f9fb] rounded-full shadow-inner border-l border-pink-100"></div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
