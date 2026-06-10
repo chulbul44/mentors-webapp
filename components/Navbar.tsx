@@ -37,9 +37,13 @@ export default function Navbar() {
 
     useEffect(() => {
         if (!isMounted) return;
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        if (user.isAdmin) {
-            setTimeout(() => setIsAdmin(true), 0);
+        try {
+            const user = JSON.parse(localStorage.getItem("user") || "{}");
+            if (user && user.isAdmin) {
+                setTimeout(() => setIsAdmin(true), 0);
+            }
+        } catch (error) {
+            console.error("Error parsing user from localStorage:", error);
         }
 
         const handleScroll = () => {

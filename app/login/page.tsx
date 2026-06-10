@@ -6,88 +6,10 @@ import { useState } from "react";
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
-    const [resetLoading, setResetLoading] = useState(false);
-    const [showForgotPassword, setShowForgotPassword] = useState(false);
-    const [resetStep, setResetStep] = useState<"email" | "reset">("email");
-    const [forgotEmail, setForgotEmail] = useState("");
-    const [resetToken, setResetToken] = useState("");
-    const [newPassword, setNewPassword] = useState("");
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
-
-    const openForgotPassword = () => {
-        setShowForgotPassword(true);
-        setResetStep("email");
-        setForgotEmail(formData.email || "");
-        setResetToken("");
-        setNewPassword("");
-    };
-
-    const closeForgotPassword = () => {
-        setShowForgotPassword(false);
-        setResetLoading(false);
-    };
-
-    const handleRequestResetToken = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setResetLoading(true);
-        try {
-            const res = await fetch("http://localhost:5000/api/forgot-password", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email: forgotEmail }),
-            });
-
-            const data = await res.json();
-            if (res.ok && data.success) {
-                setResetStep("reset");
-                alert(
-                    `Reset token generated: ${data.resetToken}\nUse this token in next step.\n(Production me ye token email pe jayega.)`
-                );
-            } else {
-                alert("Forgot Password Failed: " + (data.message || "Unknown error"));
-            }
-        } catch (error) {
-            console.error(error);
-            alert("Error: Could not connect to server.");
-        } finally {
-            setResetLoading(false);
-        }
-    };
-
-    const handleResetPassword = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setResetLoading(true);
-        try {
-            const res = await fetch("http://localhost:5000/api/reset-password", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    token: resetToken.trim(),
-                    newPassword,
-                }),
-            });
-
-            const data = await res.json();
-            if (res.ok && data.success) {
-                alert("Password reset successful! Please login with your new password.");
-                closeForgotPassword();
-            } else {
-                alert("Reset Password Failed: " + (data.message || "Unknown error"));
-            }
-        } catch (error) {
-            console.error(error);
-            alert("Error: Could not connect to server.");
-        } finally {
-            setResetLoading(false);
-        }
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -124,6 +46,9 @@ export default function LoginPage() {
                         window.location.href = "/";
                     }
                 }, 1000);
+            } else if (data.isUnverified) {
+                alert(data.message || "Your account is not verified. Redirecting to verification page.");
+                window.location.href = `/signup?verify=true&email=${encodeURIComponent(formData.email)}`;
             } else {
                 alert("Login Failed: " + (data.message || "Unknown error"));
             }
@@ -190,13 +115,12 @@ export default function LoginPage() {
                                 />
                             </div>
                             <div className="flex justify-end">
-                                <button
-                                    type="button"
-                                    onClick={openForgotPassword}
+                                <Link
+                                    href="/forgot-password"
                                     className="text-xs text-pink-500 hover:text-pink-600 font-medium"
                                 >
                                     Forgot Password?
-                                </button>
+                                </Link>
                             </div>
                         </div>
 
@@ -227,85 +151,6 @@ export default function LoginPage() {
 
                 </div>
             </div>
-
-            {showForgotPassword && (
-                <div className="fixed inset-0 z-30 bg-black/40 flex items-center justify-center px-4">
-                    <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-bold text-gray-900">Forgot Password</h2>
-                            <button
-                                type="button"
-                                onClick={closeForgotPassword}
-                                className="text-gray-500 hover:text-gray-700 text-sm"
-                            >
-                                Close
-                            </button>
-                        </div>
-
-                        {resetStep === "email" ? (
-                            <form onSubmit={handleRequestResetToken} className="space-y-4">
-                                <p className="text-sm text-gray-600">
-                                    Enter your account email. We will generate a reset token.
-                                </p>
-                                <input
-                                    type="email"
-                                    required
-                                    value={forgotEmail}
-                                    onChange={(e) => setForgotEmail(e.target.value)}
-                                    placeholder="hello@example.com"
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all"
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={resetLoading}
-                                    className="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold disabled:opacity-70"
-                                >
-                                    {resetLoading ? "Generating token..." : "Generate Reset Token"}
-                                </button>
-                            </form>
-                        ) : (
-                            <form onSubmit={handleResetPassword} className="space-y-4">
-                                <p className="text-sm text-gray-600">
-                                    Enter reset token and your new password.
-                                </p>
-                                <input
-                                    type="text"
-                                    required
-                                    value={resetToken}
-                                    onChange={(e) => setResetToken(e.target.value)}
-                                    placeholder="Reset token"
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all"
-                                />
-                                <input
-                                    type="password"
-                                    required
-                                    minLength={6}
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                    placeholder="New password"
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all"
-                                />
-                                <div className="flex gap-3">
-                                    <button
-                                        type="button"
-                                        onClick={() => setResetStep("email")}
-                                        className="w-1/2 border border-gray-300 text-gray-700 py-3 rounded-xl font-semibold"
-                                    >
-                                        Back
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={resetLoading}
-                                        className="w-1/2 bg-gray-900 text-white py-3 rounded-xl font-semibold disabled:opacity-70"
-                                    >
-                                        {resetLoading ? "Resetting..." : "Reset Password"}
-                                    </button>
-                                </div>
-                            </form>
-                        )}
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

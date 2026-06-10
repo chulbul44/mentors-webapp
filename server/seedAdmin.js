@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("./models/User");
 require("dotenv").config(); // In case they use a .env file
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://chulbhullohani_db_user:wCNEFtIQTmmHqiFc@cluster0.igizlt9.mongodb.net/luxe_ecommerce?retryWrites=true&w=majority";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://chulbhullohani_db_user:Chulbul%402004@cluster0.igizlt9.mongodb.net/luxe_ecommerce?retryWrites=true&w=majority";
 
 const seedAdmin = async () => {
     try {

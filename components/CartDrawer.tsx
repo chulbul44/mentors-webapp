@@ -73,11 +73,15 @@ export default function CartDrawer() {
                         cart.map((item) => (
                             <div key={`${item.id}-${item.size}`} className="flex gap-4">
                                 <div className="relative w-20 h-24 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
-                                    <Image
-                                        src={item.image}
-                                        alt={item.title}
-                                        fill
-                                        className="object-cover"
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img 
+                                        src={
+                                            item.image && typeof item.image === 'string' && (item.image.startsWith('/') || item.image.startsWith('http'))
+                                                ? item.image 
+                                                : "/favicon.ico"
+                                        } 
+                                        alt={item.title} 
+                                        className="w-full h-full object-cover" 
                                     />
                                 </div>
                                 <div className="flex-1 flex flex-col justify-between">

@@ -119,7 +119,16 @@ export default function AdminProducts() {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center gap-3">
                                             <div className="relative w-12 h-12 rounded-lg bg-gray-100 overflow-hidden shrink-0">
-                                                <Image src={product.image} alt={product.name} fill className="object-cover" />
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img 
+                                                    src={
+                                                        product.image && typeof product.image === 'string' && (product.image.startsWith('/') || product.image.startsWith('http'))
+                                                            ? product.image 
+                                                            : "/favicon.ico"
+                                                    } 
+                                                    alt={product.name} 
+                                                    className="w-full h-full object-cover" 
+                                                />
                                             </div>
                                             <div className="max-w-[200px]">
                                                 <p className="text-sm font-bold text-gray-900 truncate">{product.name}</p>
