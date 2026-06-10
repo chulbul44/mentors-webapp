@@ -85,7 +85,7 @@ export default function LoginPage() {
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700 ml-1">Email</label>
                             <div className="relative">
@@ -97,6 +97,7 @@ export default function LoginPage() {
                                     className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    autoComplete="off"
                                 />
                             </div>
                         </div>
@@ -112,6 +113,7 @@ export default function LoginPage() {
                                     className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all"
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    autoComplete="new-password"
                                 />
                             </div>
                             <div className="flex justify-end">
